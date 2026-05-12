@@ -12,6 +12,7 @@ public class RenderConfig {
     public static ModConfigSpec.DoubleValue HIT_MARKET_START_POSITION;
     public static ModConfigSpec.BooleanValue HEAD_SHOT_DEBUG_HITBOX;
     public static ModConfigSpec.BooleanValue GUN_HUD_ENABLE;
+    public static ModConfigSpec.BooleanValue HEAT_HUD_ENABLE;
     public static ModConfigSpec.BooleanValue KILL_AMOUNT_ENABLE;
     public static ModConfigSpec.DoubleValue KILL_AMOUNT_DURATION_SECOND;
     public static ModConfigSpec.IntValue TARGET_RENDER_DISTANCE;
@@ -49,6 +50,9 @@ public class RenderConfig {
 
         builder.comment("Whether or not to display the gun's HUD");
         GUN_HUD_ENABLE = builder.define("GunHUDEnable", true);
+
+        builder.comment("Whether or not to display the gun's Overheat HUD");
+        HEAT_HUD_ENABLE = builder.define("HeatHUDEnable", false);
 
         builder.comment("Whether or not to display the kill amount");
         KILL_AMOUNT_ENABLE = builder.define("KillAmountEnable", true);
