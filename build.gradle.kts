@@ -68,6 +68,10 @@ repositories {
             includeGroup("com.github.FiguraMC.luaj")
         }
     }
+    maven {
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
+    }
     maven("https://maven.shedaniel.me")
     maven("https://maven.kosmx.dev")
     maven("https://maven.blamejared.com")
@@ -139,6 +143,7 @@ dependencies {
     compileOnly(libs.curse.maven.controllable)
     implementation(libs.dev.latvian.mods.kubejs.neoforge)
     compileOnly(libs.dev.latvian.mods.rhino)
+    implementation("curse.maven:parcool-482378:7518793")
 }
 
 java {
