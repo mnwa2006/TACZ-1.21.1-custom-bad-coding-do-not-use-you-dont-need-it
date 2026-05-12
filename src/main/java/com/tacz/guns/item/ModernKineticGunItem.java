@@ -237,7 +237,7 @@ public class ModernKineticGunItem extends AbstractGunItem implements GunItemData
                     if (iGun.isOverheatLocked(gunItem)) {
                         tickLocked(iGun, gunItem, heatData, heatTimestamp);
                     } else {
-                        tickNormal(iGun, gunItem, heatData, heatTimestamp);
+                        tickLocked(iGun, gunItem, heatData, heatTimestamp);
                     }
                 });
     }
@@ -249,7 +249,7 @@ public class ModernKineticGunItem extends AbstractGunItem implements GunItemData
                     * heatData.getCoolingMultiplier();
 
             iGun.setHeatAmount(gunStack, heatAmount);
-            if (heatAmount <= 0) {
+            if (heatAmount / heatData.getHeatMax() <= 1) {
                 iGun.setOverheatLocked(gunStack, false);
             }
         }
