@@ -52,6 +52,10 @@ public class RenderClothConfig {
                 .setDefaultValue(true).setTooltip(Component.translatable("config.tacz.client.render.gun_hud_enable.desc"))
                 .setSaveConsumer(RenderConfig.GUN_HUD_ENABLE::set).build());
 
+        render.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.tacz.client.render.heat_hud_enable"), RenderConfig.HEAT_HUD_ENABLE.get())
+                .setDefaultValue(true).setTooltip(Component.translatable("config.tacz.client.render.heat_hud_enable.desc"))
+                .setSaveConsumer(RenderConfig.HEAT_HUD_ENABLE::set).build());
+
         render.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.tacz.client.render.kill_amount_enable"), RenderConfig.KILL_AMOUNT_ENABLE.get())
                 .setDefaultValue(true).setTooltip(Component.translatable("config.tacz.client.render.kill_amount_enable.desc"))
                 .setSaveConsumer(RenderConfig.KILL_AMOUNT_ENABLE::set).build());
