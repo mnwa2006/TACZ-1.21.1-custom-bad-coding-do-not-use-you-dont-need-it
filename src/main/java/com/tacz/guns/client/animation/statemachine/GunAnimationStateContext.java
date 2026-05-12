@@ -1,5 +1,7 @@
 package com.tacz.guns.client.animation.statemachine;
 
+import com.alrex.parcool.common.action.impl.Crawl;
+import com.alrex.parcool.common.action.impl.Slide;
 import com.tacz.guns.api.DefaultAssets;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.client.gameplay.IClientPlayerGunOperator;
@@ -24,10 +26,12 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.joml.Vector3f;
 import org.luaj.vm2.LuaTable;
+import com.alrex.parcool.common.attachment.common.Parkourability;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -294,9 +298,18 @@ public class GunAnimationStateContext extends ItemAnimationStateContext {
      * @return 玩家当前是否正在匍匐
      */
     public boolean isCrawl() {
-        return processGunOperator(IClientPlayerGunOperator::isCrawl).orElse(false);
-    }
+        Player player = Minecraft.getInstance().player;
+        boolean isCrawling = false;
+        boolean isSliding = false;
 
+        if ((player != null)) {
+            isCrawling = Parkourability.get(player).get(Crawl.class).isDoing() & !Parkourability.get(player).get(Slide.class).isDoing();
+        }
+
+        return (processGunOperator(IClientPlayerGunOperator::isCrawl).orElse(false)
+                || isCrawling
+        );
+    }
     /**
      * 获取玩家是否接触地面
      * @return 玩家是否接触地面
@@ -310,7 +323,16 @@ public class GunAnimationStateContext extends ItemAnimationStateContext {
      * @return 玩家是否蹲伏
      */
     public boolean isCrouching() {
-        return processCameraEntity(Entity::isCrouching).orElse(false);
+        Player player = Minecraft.getInstance().player;
+        boolean isSliding = false;
+
+        if ((player != null)) {
+            isSliding = Parkourability.get(player).get(Slide.class).isDoing();
+        }
+
+        return (processCameraEntity(Entity::isCrouching).orElse(false)
+                || isSliding
+        );
     }
 
     /**
@@ -319,7 +341,16 @@ public class GunAnimationStateContext extends ItemAnimationStateContext {
      * @return 玩家当前是否应该斜握枪械
      */
     public boolean shouldSlide() {
-        return processCameraEntity(e -> e.isCrouching() && gunData.canSlide()).orElse(false);
+        Player player = Minecraft.getInstance().player;
+        boolean isSliding = false;
+
+        if ((player != null)) {
+            isSliding = Parkourability.get(player).get(Slide.class).isDoing();
+        }
+
+        return (processCameraEntity(e -> e.isCrouching() && gunData.canSlide()).orElse(false)
+                || isSliding && gunData.canSlide()
+        );
     }
 
     /**
