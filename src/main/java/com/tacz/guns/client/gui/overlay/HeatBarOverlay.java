@@ -34,6 +34,9 @@ public class HeatBarOverlay implements LayeredDraw.Layer {
         if (!RenderConfig.GUN_HUD_ENABLE.get()) {
             return;
         }
+        if (!RenderConfig.HEAT_HUD_ENABLE.get()) {
+            return;
+        }
         Minecraft mc = Minecraft.getInstance();
         int guiTicks = mc.gui.getGuiTicks();
         LocalPlayer player = mc.player;
