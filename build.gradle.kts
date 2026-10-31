@@ -1,4 +1,7 @@
+import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
+
 plugins {
+    alias(libs.plugins.dotenv)
     alias(libs.plugins.moddev)
     alias(libs.plugins.mod.publish)
 }
@@ -133,7 +136,7 @@ dependencies {
     compileOnly(libs.dev.kosmx.player.animation.lib.forge)
     implementation(libs.maven.modrinth.sodium)
     implementation(libs.maven.modrinth.iris)
-    compileOnly(libs.maven.modrinth.acceleratedrendering)
+    implementation(libs.curse.maven.acceleratedrendering)
     compileOnly(libs.maven.modrinth.carry.on)
     compileOnly(libs.maven.modrinth.shoulder.surfing.reloaded)
     compileOnly(libs.mezz.jei.common.api)
@@ -180,18 +183,24 @@ publishMods {
     modrinth {
         projectId = project.property("modrinth_id") as String
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+            .orElse(provider { env.fetch("MODRINTH_TOKEN") })
         minecraftVersions.add("1.21.1")
+        environment = ModrinthEnvironment.CLIENT_AND_SERVER
     }
 
     curseforge {
         projectId = project.property("curseforge_id") as String
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+            .orElse(provider { env.fetch("CURSEFORGE_TOKEN") })
         minecraftVersions.add("1.21.1")
+        client = true
+        server = true
     }
 
     github {
         repository = project.property("repository") as String
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
+            .orElse(provider { env.fetch("GITHUB_TOKEN") })
         commitish = "neoforge/1.21.1"
         tagName = "neoforge-${project.version}"
     }
